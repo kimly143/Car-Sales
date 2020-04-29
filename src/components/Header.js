@@ -1,13 +1,17 @@
 import React from 'react';
-
+import { useSelector } from 'react-redux';
 const Header = props => {
+  // selector is a function take the state and return some value we want from state
+  const car = useSelector((state) => {
+    return state.car;
+  })
   return (
     <>
       <figure className="image is-128x128">
-        <img src={props.car.image} alt={props.car.name} />
+        <img src={car.image} alt={car.name} />
       </figure>
-      <h2>{props.car.name}</h2>
-      <p>Amount: ${props.car.price}</p>
+      <h2>{car.name}</h2>
+      <p>Amount: ${car.price}</p>
     </>
   );
 };

@@ -15,23 +15,46 @@ export const initialState = {
 };
 
 export default function reducer(state, action) {
-
-    let feature;
+	let feature;
 	switch (action.type) {
 		case 'ADD_FEATURE':
-            // f is the feature object
-            // find() return the object when return is true.
-            feature = state.additionalFeatures.find(f => {
-                return f.id === action.id
-            })
+			// f is the feature object
+			// find() return the object when return is true.
+			feature = state.additionalFeatures.find((f) => {
+				return f.id === action.id;
+			});
 			return {
-                ...state,
-                additionalPrice: state.additionalPrice + feature.price,
+				...state,
+				additionalPrice: state.additionalPrice + feature.price,
 				car: {
 					...state.car,
-					features: [ ...state.car.features, action.id]
-				}
-            };
-        default: return state;
+					features: [ ...state.car.features, feature ]
+				},
+				additionalFeatures: state.additionalFeatures.filter((f) => {
+					//keep addional feature that not selected.
+					return f.id !== action.id;
+				})
+			};
+		case 'REMOVE_FEATURE':
+			// f is the feature object
+			// find() return the object when return is true.
+			feature = state.car.features.find((f) => {
+				return f.id === action.id;
+			});
+			return {
+				...state,
+				additionalPrice: state.additionalPrice - feature.price,
+				car: {
+					...state.car,
+					features: state.car.features.filter((f) => {
+                        //keep feature that not selected.
+                        return f.id !== action.id;
+                    })
+                },
+                //add the feature got removed back to the additional features list
+                additionalFeatures: [ ...state.additionalFeatures, feature ]
+			};
+		default:
+			return state;
 	}
 }
