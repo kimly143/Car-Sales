@@ -1,15 +1,20 @@
 import React from 'react';
-
+import { useSelector } from 'react-redux';
 import AddedFeature from './AddedFeature';
 
 const AddedFeatures = props => {
+  // selector is a function take the state and return some value we want from state
+  const features = useSelector((state) => {
+    return state.car.features;
+  })
   return (
     <div className="content">
       <h6>Added features:</h6>
-      {props.car.features.length ? (
+      {features.length ? (
         <ol type="1">
-          {props.car.features.map(item => (
+          {features.map(item => (
             <AddedFeature key={item.id} feature={item} />
+
           ))}
         </ol>
       ) : (
